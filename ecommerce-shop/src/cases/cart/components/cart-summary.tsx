@@ -7,18 +7,18 @@ interface CartSummaryProps {
 
 export function CartSummary({ subtotal, itemCount }: CartSummaryProps) {
   return (
-    <div className="border-t pt-4 mt-4">
-      <div className="flex justify-between items-center mb-2">
-        <span className="text-gray-600">
+    <div className="border-t-2 border-rose-200 pt-4 mt-4">
+      <div className="flex justify-between items-center mb-3">
+        <span className="text-rose-700 font-medium">
           {itemCount} {itemCount === 1 ? 'item' : 'itens'}
         </span>
         <span className="text-sm text-gray-500">Subtotal</span>
       </div>
-      <div className="flex justify-between items-center">
-        <span className="text-2xl font-bold">{formatBRL(subtotal)}</span>
+      <div className="flex justify-between items-center mb-4">
+        <span className="text-2xl font-bold bg-linear-to-r from-rose-500 to-pink-600 bg-clip-text text-transparent">{formatBRL(subtotal)}</span>
       </div>
-      <button className="w-full bg-green-600 text-white py-3 rounded-md mt-4 hover:bg-green-700 transition-colors font-semibold">
-        Finalizar Compra
+      <button className="w-full bg-linear-to-r from-rose-500 to-pink-600 text-white py-3 rounded-lg hover:from-rose-600 hover:to-pink-700 transition-all duration-200 font-semibold shadow-md hover:shadow-lg">
+        ✨ Finalizar Compra
       </button>
     </div>
   );

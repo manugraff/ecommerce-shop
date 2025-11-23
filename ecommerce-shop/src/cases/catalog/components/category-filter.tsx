@@ -27,25 +27,27 @@ export function CategoryFilter() {
 
   return (
     <div className="space-y-2">
-      <h3 className="font-semibold text-lg mb-4">Categorias</h3>
+      <h3 className="font-bold text-lg mb-4 bg-linear-to-r from-rose-500 to-pink-600 bg-clip-text text-transparent flex items-center gap-2">
+        <span>🏷️</span> Categorias
+      </h3>
       <Link
         to="/"
-        className={`block px-3 py-2 rounded-md transition-colors ${
+        className={`block px-4 py-2.5 rounded-lg transition-all duration-200 ${
           isAllActive
-            ? 'bg-blue-100 text-blue-700 font-medium'
-            : 'hover:bg-gray-100 text-gray-700'
+            ? 'bg-linear-to-r from-rose-500 to-pink-600 text-white font-medium shadow-md'
+            : 'hover:bg-rose-50 text-gray-700 hover:text-rose-600'
         }`}
       >
-        Todas
+        ✨ Todas
       </Link>
       {categories.map((category) => (
         <Link
           key={category.id}
           to={`/category/${category.id}`}
-          className={`block px-3 py-2 rounded-md transition-colors ${
+          className={`block px-4 py-2.5 rounded-lg transition-all duration-200 ${
             isActive(category.id)
-              ? 'bg-blue-100 text-blue-700 font-medium'
-              : 'hover:bg-gray-100 text-gray-700'
+              ? 'bg-linear-to-r from-rose-500 to-pink-600 text-white font-medium shadow-md'
+              : 'hover:bg-rose-50 text-gray-700 hover:text-rose-600'
           }`}
         >
           {category.name}

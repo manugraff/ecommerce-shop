@@ -1,19 +1,16 @@
-import type { ReactNode } from 'react';
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import { Header } from './header';
 import { Footer } from './footer';
 
-interface MainLayoutProps {
-  children: ReactNode;
-  searchQuery?: string;
-  onSearchChange?: (query: string) => void;
-}
+export function MainLayout() {
+  const [searchQuery, setSearchQuery] = useState('');
 
-export function MainLayout({ children, searchQuery, onSearchChange }: MainLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header searchQuery={searchQuery} onSearchChange={onSearchChange} />
-      <main className="flex-1 container mx-auto px-4 py-6">
-        {children}
+    <div className="flex flex-col min-h-screen">
+      <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+      <main className="flex-1 container mx-auto py-8 px-4">
+        <Outlet context={{ searchQuery, setSearchQuery }} />
       </main>
       <Footer />
     </div>
