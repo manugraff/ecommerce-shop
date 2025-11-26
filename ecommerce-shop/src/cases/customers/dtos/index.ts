@@ -1,1 +1,1 @@
-export type { CustomerDTO, CreateCustomerDTO } from './customer.dto';
+export type { CustomerDTO, CreateCustomerDTO, CustomerCreationPayload } from './customer.dto';

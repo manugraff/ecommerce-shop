@@ -1,9 +1,42 @@
 import { api } from '../../../lib/axios';
-import type { CustomerDTO, CreateCustomerDTO } from '../dtos';
+import type { CustomerDTO, CreateCustomerDTO, CustomerCreationPayload } from '../dtos';
+
+/**
+ * Sanitizes customer data for backend API compliance
+ * Removes unauthorized fields and formats data according to backend specification
+ * @param data - Raw customer data from form
+ * @returns Clean payload matching backend API contract
+ */
+const sanitizeCustomerPayload = (data: CreateCustomerDTO): CustomerCreationPayload => {
+  const payload: CustomerCreationPayload = {
+    name: data.name
+  };
+
+  // Only include optional fields if they have valid values
+  if (data.address && data.address.trim()) {
+    payload.address = data.address.trim();
+  }
+
+  if (data.zipcode && /^\d{8}$/.test(data.zipcode)) {
+    payload.zipcode = data.zipcode;
+  }
+
+  if (data.cityId) {
+    payload.city = { id: data.cityId };
+  }
+
+  return payload;
+};
 
 export const customerService = {
   async create(data: CreateCustomerDTO): Promise<CustomerDTO> {
-    const response = await api.post<CustomerDTO>('/customers', data);
+    // Clean payload before sending to backend
+    const cleanPayload = sanitizeCustomerPayload(data);
+    
+    // Debug logging for payload verification (temporary)
+    console.log('Payload enviado para Customers:', cleanPayload);
+    
+    const response = await api.post<CustomerDTO>('/customers', cleanPayload);
     return response.data;
   },
 

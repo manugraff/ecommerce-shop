@@ -52,20 +52,40 @@ export function RegisterForm() {
       // Step 2: Create Customer in backend
       try {
         await customerService.create({
-          supabaseUserId: authData.user.id,
           name: data.name,
-          email: data.email,
+          // NOTE: supabaseUserId and email removed from payload
+          // These will be handled separately in application layer
         });
 
         showToast('Conta criada com sucesso!', 'success');
         navigate('/');
-      } catch (backendError) {
-        // Backend failed - notify user
+      } catch (backendError: any) {
+        // Enhanced error handling for backend customer creation
         console.error('Failed to create customer in backend:', backendError);
-        showToast(
-          'Conta criada no Supabase, mas erro ao sincronizar com backend. Por favor, contate o suporte.',
-          'error'
-        );
+        
+        if (backendError.response?.status === 400) {
+          showToast('Dados inválidos. Verifique as informações fornecidas.', 'error');
+        } else if (backendError.response?.status === 422) {
+          const errors = backendError.response.data?.errors;
+          if (errors?.length) {
+            showToast(`Erro de validação: ${errors[0].message}`, 'error');
+          } else {
+            showToast('Dados inválidos. Verifique as informações fornecidas.', 'error');
+          }
+        } else if (backendError.response?.status === 500) {
+          // Specific handling for server errors (database constraints, etc.)
+          showToast(
+            'Erro interno do servidor. Tente novamente em alguns instantes ou entre em contato com suporte.',
+            'error'
+          );
+        } else if (backendError.response?.status >= 400 && backendError.response?.status < 500) {
+          showToast('Erro na solicitação. Verifique os dados e tente novamente.', 'error');
+        } else {
+          showToast(
+            'Conta criada no sistema de autenticação, mas houve um problema ao criar o perfil. Entre em contato com suporte.',
+            'error'
+          );
+        }
         // Note: In production, implement rollback here by calling Supabase admin API
       }
     } catch (error) {
