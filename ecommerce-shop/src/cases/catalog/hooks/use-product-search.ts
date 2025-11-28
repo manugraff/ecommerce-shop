@@ -8,10 +8,9 @@ interface UseProductSearchParams {
 }
 
 export function useProductSearch({ products, searchQuery }: UseProductSearchParams) {
-  // Debounce search query to avoid excessive filtering
+
   const debouncedQuery = useDebounce(searchQuery, 300);
 
-  // Filter products based on debounced search query
   const filteredProducts = useMemo(() => {
     if (!debouncedQuery.trim()) {
       return products;

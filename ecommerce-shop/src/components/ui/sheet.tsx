@@ -38,7 +38,7 @@ interface SheetTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement
 const SheetTrigger = React.forwardRef<HTMLButtonElement, SheetTriggerProps>(
   ({ asChild, onClick, ...props }, ref) => {
     const { onOpenChange } = useSheet()
-    
+
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       onClick?.(e)
       onOpenChange(true)
@@ -86,13 +86,13 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
 
     return (
       <>
-        {/* Backdrop */}
+        {}
         <div
           className="fixed inset-0 z-50 bg-black/50"
           onClick={() => onOpenChange(false)}
         />
-        
-        {/* Sheet */}
+
+        {}
         <div
           ref={ref}
           className={cn(

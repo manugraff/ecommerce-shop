@@ -14,7 +14,7 @@ interface OrderItemProps {
 export function OrderItem({ order, onClick, className }: OrderItemProps) {
   const orderDate = new Date(order.createdAt).toLocaleDateString('pt-BR', {
     day: '2-digit',
-    month: '2-digit', 
+    month: '2-digit',
     year: 'numeric'
   });
 
@@ -26,16 +26,16 @@ export function OrderItem({ order, onClick, className }: OrderItemProps) {
 
   const handleReviewProduct = (productId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    // TODO: Navigate to product review page
+
     console.log('Review product:', productId);
   };
 
   return (
-    <Card 
+    <Card
       className={`mb-4 transition-colors hover:bg-gray-50 ${onClick ? 'cursor-pointer' : ''} ${className || ''}`}
       onClick={handleClick}
     >
-      {/* Header: Date (Left) + Status Badge (Right) */}
+      {}
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <div>
           <p className="text-sm font-medium text-gray-900">
@@ -47,17 +47,17 @@ export function OrderItem({ order, onClick, className }: OrderItemProps) {
         </div>
         <OrderStatusBadge status={order.status} />
       </CardHeader>
-      
-      {/* Body: List items with thumbnails */}
+
+      {}
       <CardContent className="space-y-3">
         {order.items.map((item) => (
           <div key={item.id} className="flex items-center gap-3">
-            {/* Thumbnail placeholder */}
+            {}
             <div className="w-12 h-12 bg-linear-to-br from-rose-50 to-pink-50 rounded-lg flex items-center justify-center shrink-0">
               <Package className="h-6 w-6 text-rose-300" />
             </div>
-            
-            {/* Item details */}
+
+            {}
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-900 truncate">
                 {item.product.name}
@@ -66,8 +66,8 @@ export function OrderItem({ order, onClick, className }: OrderItemProps) {
                 Qtd: {item.quantity} • {formatBRL(item.product.price)} cada
               </p>
             </div>
-            
-            {/* Review button for delivered items */}
+
+            {}
             {order.status === 'DELIVERED' && (
               <Button
                 variant="outline"
@@ -82,8 +82,8 @@ export function OrderItem({ order, onClick, className }: OrderItemProps) {
           </div>
         ))}
       </CardContent>
-      
-      {/* Footer: Total Price (Right aligned) */}
+
+      {}
       <CardFooter className="pt-4 border-t">
         <div className="flex justify-between items-center w-full">
           <span className="text-sm text-gray-500">

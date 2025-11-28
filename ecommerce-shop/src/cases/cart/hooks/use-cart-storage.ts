@@ -6,7 +6,6 @@ import { CartStorageService } from '../services/cart-storage.service';
 export function useCartStorage() {
   const [cart, setCart] = useState<CartStateDTO>(() => CartStorageService.load());
 
-  // Persist to localStorage whenever cart changes
   useEffect(() => {
     CartStorageService.save(cart.items);
   }, [cart]);

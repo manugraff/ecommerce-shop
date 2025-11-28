@@ -28,7 +28,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     let newItems: CartItemDTO[];
 
     if (existingItemIndex >= 0) {
-      // Update existing item
+
       newItems = [...cart.items];
       const newQuantity = newItems[existingItemIndex].quantity + quantity;
       newItems[existingItemIndex] = {
@@ -38,7 +38,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       };
       success(`${product.name} atualizado no carrinho!`);
     } else {
-      // Add new item
+
       newItems = [
         ...cart.items,
         {

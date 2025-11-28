@@ -11,9 +11,7 @@ interface StoredCart {
 }
 
 export class CartStorageService {
-  /**
-   * Load cart from localStorage
-   */
+
   static load(): CartStateDTO {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -22,8 +20,7 @@ export class CartStorageService {
       }
 
       const data: StoredCart = JSON.parse(stored);
-      
-      // Validate version and structure
+
       if (data.version !== STORAGE_VERSION || !Array.isArray(data.items)) {
         console.warn('Invalid cart data, resetting cart');
         return this.createEmptyCart();
@@ -36,9 +33,6 @@ export class CartStorageService {
     }
   }
 
-  /**
-   * Save cart to localStorage
-   */
   static save(items: CartItemDTO[]): void {
     try {
       const data: StoredCart = {
@@ -52,9 +46,6 @@ export class CartStorageService {
     }
   }
 
-  /**
-   * Clear cart from localStorage
-   */
   static clear(): void {
     try {
       localStorage.removeItem(STORAGE_KEY);
@@ -63,9 +54,6 @@ export class CartStorageService {
     }
   }
 
-  /**
-   * Compute cart state from items
-   */
   private static computeCartState(items: CartItemDTO[]): CartStateDTO {
     const subtotal = items.reduce((sum, item) => sum + item.lineTotal, 0);
     const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
@@ -77,9 +65,6 @@ export class CartStorageService {
     };
   }
 
-  /**
-   * Create an empty cart
-   */
   private static createEmptyCart(): CartStateDTO {
     return {
       items: [],

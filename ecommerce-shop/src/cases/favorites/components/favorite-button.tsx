@@ -5,39 +5,37 @@ import { useAuth } from '../../../contexts/auth-context';
 import { useToast } from '../../../contexts/toast-context';
 
 interface FavoriteButtonProps {
-  /** Product ID to favorite/unfavorite */
+
   productId: string;
-  /** Size variant */
+
   size?: 'sm' | 'md' | 'lg';
-  /** Additional CSS classes */
+
   className?: string;
-  /** Product name for toast messages */
+
   productName?: string;
 }
 
-export function FavoriteButton({ 
-  productId, 
-  size = 'md', 
+export function FavoriteButton({
+  productId,
+  size = 'md',
   className = '',
   productName = 'Produto'
 }: FavoriteButtonProps) {
   const { isFavorite, toggleFavorite } = useFavorites();
-  const { customerData } = useAuth();
+  const { user } = useAuth();
   const { success, error } = useToast();
-  
+
   const isProductFavorited = isFavorite(productId);
 
-  // Size classes
   const sizeClasses = {
     sm: 'w-6 h-6',
     md: 'w-8 h-8',
     lg: 'w-10 h-10'
   };
 
-  // Icon size classes
   const iconSizes = {
     sm: 'w-3 h-3',
-    md: 'w-4 h-4', 
+    md: 'w-4 h-4',
     lg: 'w-5 h-5'
   };
 
@@ -45,14 +43,14 @@ export function FavoriteButton({
     e.preventDefault();
     e.stopPropagation();
 
-    if (!customerData) {
+    if (!user) {
       error('Você precisa estar logado para favoritar produtos');
       return;
     }
 
     try {
       toggleFavorite(productId);
-      
+
       if (isProductFavorited) {
         success(`${productName} removido dos favoritos`);
       } else {
@@ -84,9 +82,10 @@ export function FavoriteButton({
       aria-label={isProductFavorited ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
     >
       <Heart
-        className={iconSizes[size]}
+        className={`${iconSizes[size]} drop-shadow-sm`}
         fill={isProductFavorited ? 'currentColor' : 'none'}
-        strokeWidth={2}
+        stroke="currentColor"
+        strokeWidth={isProductFavorited ? 0 : 2.5}
       />
     </button>
   );

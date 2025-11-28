@@ -34,7 +34,7 @@ export function LoginForm() {
       console.error('Login error:', error);
       const errorMessage =
         error instanceof Error ? error.message : 'Email ou senha incorretos';
-      
+
       if (errorMessage.includes('Invalid login credentials')) {
         showToast('Email ou senha incorretos', 'error');
       } else {

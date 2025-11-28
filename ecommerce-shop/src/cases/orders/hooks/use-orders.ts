@@ -6,6 +6,6 @@ export function useOrders(customerId?: number) {
     queryKey: ['orders', customerId],
     queryFn: () => orderService.getByCustomerId(customerId!),
     enabled: !!customerId,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 }

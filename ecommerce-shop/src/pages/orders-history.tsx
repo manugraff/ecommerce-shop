@@ -5,13 +5,12 @@ import { Skeleton } from '../components/ui/skeleton';
 export function OrdersHistoryPage() {
   const { data: orders, isLoading: isLoadingOrders, error: ordersError } = useMyOrders();
 
-  // Loading State
   if (isLoadingOrders) {
     return (
       <div className="container mx-auto px-4 py-6">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">Meus Pedidos</h1>
-          
+
           <div className="space-y-4">
             {[...Array(3)].map((_, index) => (
               <div key={index} className="p-6 border border-gray-200 rounded-lg">
@@ -32,13 +31,12 @@ export function OrdersHistoryPage() {
     );
   }
 
-  // Error State
   if (ordersError) {
     return (
       <div className="container mx-auto px-4 py-6">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">Meus Pedidos</h1>
-          
+
           <div className="text-center py-12">
             <div className="text-red-500 mb-4">
               <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -55,13 +53,12 @@ export function OrdersHistoryPage() {
     );
   }
 
-  // Empty State
   if (!orders || orders.length === 0) {
     return (
       <div className="container mx-auto px-4 py-6">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">Meus Pedidos</h1>
-          
+
           <div className="text-center py-12">
             <div className="text-gray-400 mb-4">
               <svg className="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -72,7 +69,7 @@ export function OrdersHistoryPage() {
             <p className="text-gray-500 mb-6">
               Quando você fizer sua primeira compra, seus pedidos aparecerão aqui.
             </p>
-            <a 
+            <a
               href="/"
               className="inline-flex items-center px-4 py-2 bg-rose-600 text-white text-sm font-medium rounded-lg hover:bg-rose-700 transition-colors"
             >
@@ -84,7 +81,6 @@ export function OrdersHistoryPage() {
     );
   }
 
-  // Orders List
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="max-w-4xl mx-auto">
@@ -94,7 +90,7 @@ export function OrdersHistoryPage() {
             Acompanhe o status dos seus pedidos e veja o histórico de compras
           </p>
         </div>
-        
+
         <div className="space-y-4">
           {orders.map((order) => (
             <OrderCard key={order.id} order={order} />

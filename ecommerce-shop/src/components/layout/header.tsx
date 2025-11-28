@@ -34,15 +34,15 @@ export function Header({ searchQuery, onSearchChange }: HeaderProps) {
     <>
       <header className="h-16 border-b bg-white sticky top-0 z-50">
         <div className="container mx-auto flex items-center justify-between px-4 h-full">
-          {/* Logo */}
+          {}
           <Link to="/" className="font-bold text-2xl text-rose-600 hover:text-rose-700 transition-colors">
             Glow Up
           </Link>
 
-          {/* Search - Hidden on mobile, visible on md+ */}
+          {}
           {onSearchChange && (
             <div className="hidden md:flex flex-1 justify-center px-8">
-              <div className="max-w-md w-full">
+              <div className="max-w-lg w-full">
                 <input
                   type="text"
                   placeholder="Buscar produtos..."
@@ -54,9 +54,9 @@ export function Header({ searchQuery, onSearchChange }: HeaderProps) {
             </div>
           )}
 
-          {/* Actions */}
+          {}
           <div className="flex items-center gap-4">
-            {/* User Menu for authenticated users */}
+            {}
             {user && (
               <div className="relative user-menu-container">
                 <button
@@ -66,13 +66,13 @@ export function Header({ searchQuery, onSearchChange }: HeaderProps) {
                 >
                   <User className="h-5 w-5 text-rose-600" />
                 </button>
-                
-                {/* User Dropdown */}
+
+                {}
                 {isUserMenuOpen && (
                   <>
-                    {/* Overlay to handle outside clicks */}
-                    <div 
-                      className="fixed inset-0 z-40" 
+                    {}
+                    <div
+                      className="fixed inset-0 z-40"
                       onClick={() => setIsUserMenuOpen(false)}
                     />
                     <div className="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
@@ -107,7 +107,7 @@ export function Header({ searchQuery, onSearchChange }: HeaderProps) {
               </div>
             )}
 
-            {/* Favorites with badge */}
+            {}
             <Link to="/favorites" className="p-2 rounded-full hover:bg-rose-50 transition-colors relative">
               <Heart className="h-5 w-5 text-rose-600" />
               {favoritesCount > 0 && (
@@ -117,7 +117,7 @@ export function Header({ searchQuery, onSearchChange }: HeaderProps) {
               )}
             </Link>
 
-            {/* Cart with badge */}
+            {}
             <button
               onClick={() => setIsCartOpen(true)}
               className="p-2 rounded-full hover:bg-rose-50 transition-colors relative"
@@ -130,7 +130,7 @@ export function Header({ searchQuery, onSearchChange }: HeaderProps) {
               )}
             </button>
 
-            {/* Login/Register for unauthenticated users */}
+            {}
             {!user && (
               <Link
                 to="/login"
@@ -142,7 +142,7 @@ export function Header({ searchQuery, onSearchChange }: HeaderProps) {
           </div>
         </div>
       </header>
-      
+
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );

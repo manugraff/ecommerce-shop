@@ -7,7 +7,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
 
 function Badge({ className, variant = 'default', ...props }: BadgeProps) {
   const variantStyles = {
-    default: 'bg-blue-600 text-white hover:bg-blue-700',
+    default: 'bg-primary text-primary-foreground hover:bg-primary/90',
     secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
     destructive: 'bg-red-600 text-white hover:bg-red-700',
     outline: 'text-gray-900 border border-gray-300',

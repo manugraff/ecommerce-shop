@@ -10,7 +10,7 @@ interface OrderCardProps {
 }
 
 export function OrderCard({ order, onClick, className }: OrderCardProps) {
-  // Format date using Intl API
+
   const orderDate = new Intl.DateTimeFormat('pt-BR', {
     dateStyle: 'short',
     timeStyle: 'short',
@@ -23,11 +23,11 @@ export function OrderCard({ order, onClick, className }: OrderCardProps) {
   };
 
   return (
-    <Card 
+    <Card
       className={`transition-colors hover:bg-gray-50 ${onClick ? 'cursor-pointer' : ''} ${className || ''}`}
       onClick={handleClick}
     >
-      {/* Cabeçalho com Data e Status Badge */}
+      {}
       <CardHeader className="pb-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div className="space-y-1">
@@ -38,12 +38,12 @@ export function OrderCard({ order, onClick, className }: OrderCardProps) {
               {orderDate}
             </p>
           </div>
-          
+
           <OrderStatusBadge status={order.status} />
         </div>
       </CardHeader>
-      
-      {/* Corpo com Lista de Itens */}
+
+      {}
       <CardContent className="pt-0">
         <div className="space-y-2">
           <h4 className="text-sm font-medium text-gray-700 mb-2">Itens:</h4>
@@ -59,8 +59,8 @@ export function OrderCard({ order, onClick, className }: OrderCardProps) {
               </div>
             ))}
           </div>
-          
-          {/* Frete se houver */}
+
+          {}
           {order.shipping && order.shipping > 0 && (
             <div className="flex justify-between items-center text-sm pt-1 border-t border-gray-100">
               <span className="text-gray-600">Frete:</span>
@@ -71,8 +71,8 @@ export function OrderCard({ order, onClick, className }: OrderCardProps) {
           )}
         </div>
       </CardContent>
-      
-      {/* Rodapé com Valor Total em Destaque */}
+
+      {}
       <CardFooter className="pt-3 border-t border-gray-100">
         <div className="flex justify-between items-center w-full">
           <span className="text-base font-semibold text-gray-700">

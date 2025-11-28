@@ -15,7 +15,7 @@ export const orderService = {
   },
 
   async listByCustomer(customerId: number): Promise<OrderDTO[]> {
-    // Alias for getByCustomerId for semantic clarity
+
     return this.getByCustomerId(customerId);
   },
 

@@ -44,7 +44,7 @@ export function ProductDetailsPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      {/* Breadcrumb */}
+      {}
       <nav className="flex items-center text-sm mb-6 text-gray-600">
         <Link to="/" className="hover:text-rose-600 transition-colors">
           Home
@@ -57,7 +57,7 @@ export function ProductDetailsPage() {
         <span className="bg-linear-to-r from-rose-500 to-pink-600 bg-clip-text text-transparent font-medium">{product.name}</span>
       </nav>
 
-      {/* Back Button */}
+      {}
       <button
         onClick={() => navigate(-1)}
         className="flex items-center gap-2 text-rose-600 hover:text-rose-700 mb-6 font-medium transition-colors"
@@ -66,7 +66,7 @@ export function ProductDetailsPage() {
         Voltar
       </button>
 
-      {/* Product Details */}
+      {}
       <ProductDetail product={product} onAddToCart={handleAddToCart} />
     </div>
   );

@@ -1,6 +1,7 @@
 import type { ProductDTO } from '../dtos/product.dto';
 import { ProductImage } from './product-image';
 import { formatBRL } from '../../../lib/format-brl';
+import { FavoriteButton } from '../../favorites/components/favorite-button';
 
 interface ProductDetailProps {
   product: ProductDTO;
@@ -10,11 +11,28 @@ interface ProductDetailProps {
 export function ProductDetail({ product, onAddToCart }: ProductDetailProps) {
   return (
     <div className="grid md:grid-cols-2 gap-8">
-      <div>
+      <div className="relative">
         <ProductImage />
+        {}
+        <div className="absolute top-4 right-4">
+          <FavoriteButton
+            productId={product.id}
+            productName={product.name}
+            size="lg"
+          />
+        </div>
       </div>
       <div>
-        <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+        <div className="flex items-start justify-between gap-4 mb-2">
+          <h1 className="text-3xl font-bold">{product.name}</h1>
+          {}
+          <FavoriteButton
+            productId={product.id}
+            productName={product.name}
+            size="lg"
+            className="shrink-0"
+          />
+        </div>
         <p className="text-lg text-gray-600 mb-4">{product.category.name}</p>
         {product.brand && (
           <p className="text-sm text-gray-500 mb-4">Marca: {product.brand.name}</p>
@@ -32,7 +50,7 @@ export function ProductDetail({ product, onAddToCart }: ProductDetailProps) {
         </div>
         <button
           onClick={onAddToCart}
-          className="w-full bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors text-lg font-semibold"
+          className="w-full text-lg font-semibold"
         >
           Adicionar ao Carrinho
         </button>

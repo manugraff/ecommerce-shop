@@ -1,6 +1,3 @@
-// Test file to verify the data layer implementation
-// This file demonstrates how to use the implemented hooks
-
 import { useMyOrders } from '../cases/orders/hooks';
 import { useAuth } from '../contexts/auth-context';
 

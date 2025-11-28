@@ -61,8 +61,7 @@ export function OrderList({ onOrderClick, className }: OrderListProps) {
     );
   }
 
-  // Sort orders by most recent first
-  const sortedOrders = [...orders].sort((a, b) => 
+  const sortedOrders = [...orders].sort((a, b) =>
     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
@@ -73,11 +72,11 @@ export function OrderList({ onOrderClick, className }: OrderListProps) {
           Seus Pedidos ({orders.length})
         </h2>
       </div>
-      
+
       <div className="space-y-3">
         {sortedOrders.map((order) => (
-          <OrderItem 
-            key={order.id} 
+          <OrderItem
+            key={order.id}
             order={order}
             onClick={onOrderClick}
           />

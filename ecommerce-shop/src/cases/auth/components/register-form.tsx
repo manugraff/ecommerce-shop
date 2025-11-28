@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,10 +7,47 @@ import { supabase } from '../../../lib/supabase';
 import { customerService } from '../../customers/services/customer.service';
 import { useToast } from '../../../contexts/toast-context';
 
+const RATE_LIMIT_COOLDOWN = 300;
+const RATE_LIMIT_STORAGE_KEY = 'supabase_rate_limit_until';
+
 export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const [rateLimitedUntil, setRateLimitedUntil] = useState<number | null>(() => {
+
+    const stored = localStorage.getItem(RATE_LIMIT_STORAGE_KEY);
+    if (stored) {
+      const timestamp = parseInt(stored, 10);
+      if (timestamp > Date.now()) {
+        return timestamp;
+      }
+      localStorage.removeItem(RATE_LIMIT_STORAGE_KEY);
+    }
+    return null;
+  });
+  const [cooldownRemaining, setCooldownRemaining] = useState(0);
   const navigate = useNavigate();
   const { showToast } = useToast();
+
+  useEffect(() => {
+    if (!rateLimitedUntil) return;
+
+    const interval = setInterval(() => {
+      const remaining = Math.max(0, Math.ceil((rateLimitedUntil - Date.now()) / 1000));
+      setCooldownRemaining(remaining);
+
+      if (remaining <= 0) {
+        setRateLimitedUntil(null);
+        setCooldownRemaining(0);
+        localStorage.removeItem(RATE_LIMIT_STORAGE_KEY);
+      }
+    }, 1000);
+
+    setCooldownRemaining(Math.max(0, Math.ceil((rateLimitedUntil - Date.now()) / 1000)));
+
+    return () => clearInterval(interval);
+  }, [rateLimitedUntil]);
+
+  const isRateLimited = rateLimitedUntil !== null && Date.now() < rateLimitedUntil;
 
   const {
     register,
@@ -21,10 +58,19 @@ export function RegisterForm() {
   });
 
   const onSubmit = async (data: RegisterFormData) => {
+
+    if (isRateLimited) {
+      showToast(
+        `Aguarde ${cooldownRemaining} segundos antes de tentar novamente.`,
+        'error'
+      );
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      // Step 1: Create Supabase user
+
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
@@ -36,6 +82,31 @@ export function RegisterForm() {
       });
 
       if (authError) {
+
+        const errorMessage = authError.message?.toLowerCase() || '';
+        const errorStatus = authError.status || (authError as any).__isAuthError && 429;
+        const isRateLimitError =
+          errorStatus === 429 ||
+          errorMessage.includes('rate limit') ||
+          errorMessage.includes('too many requests') ||
+          errorMessage.includes('no api key') ||
+          (authError as any).code === 'over_request_rate_limit' ||
+          (authError as any).code === '429';
+
+        if (isRateLimitError) {
+
+          const cooldownEnd = Date.now() + RATE_LIMIT_COOLDOWN * 1000;
+          setRateLimitedUntil(cooldownEnd);
+          setCooldownRemaining(RATE_LIMIT_COOLDOWN);
+          localStorage.setItem(RATE_LIMIT_STORAGE_KEY, cooldownEnd.toString());
+
+          showToast(
+            'Limite de registros atingido. O Supabase (plano gratuito) permite poucos cadastros por hora. Por favor, aguarde 5 minutos.',
+            'error'
+          );
+          return;
+        }
+
         if (authError.message.includes('already registered')) {
           showToast('Este email já está cadastrado', 'error');
         } else {
@@ -49,20 +120,18 @@ export function RegisterForm() {
         return;
       }
 
-      // Step 2: Create Customer in backend
       try {
         await customerService.create({
           name: data.name,
-          // NOTE: supabaseUserId and email removed from payload
-          // These will be handled separately in application layer
+
         });
 
         showToast('Conta criada com sucesso!', 'success');
         navigate('/');
       } catch (backendError: any) {
-        // Enhanced error handling for backend customer creation
+
         console.error('Failed to create customer in backend:', backendError);
-        
+
         if (backendError.response?.status === 400) {
           showToast('Dados inválidos. Verifique as informações fornecidas.', 'error');
         } else if (backendError.response?.status === 422) {
@@ -73,7 +142,7 @@ export function RegisterForm() {
             showToast('Dados inválidos. Verifique as informações fornecidas.', 'error');
           }
         } else if (backendError.response?.status === 500) {
-          // Specific handling for server errors (database constraints, etc.)
+
           showToast(
             'Erro interno do servidor. Tente novamente em alguns instantes ou entre em contato com suporte.',
             'error'
@@ -86,7 +155,7 @@ export function RegisterForm() {
             'error'
           );
         }
-        // Note: In production, implement rollback here by calling Supabase admin API
+
       }
     } catch (error) {
       console.error('Registration error:', error);
@@ -165,12 +234,26 @@ export function RegisterForm() {
         )}
       </div>
 
+      {}
+      {isRateLimited && (
+        <div className="p-3 bg-amber-50 border border-amber-200 rounded-md">
+          <p className="text-sm text-amber-800">
+            ⚠️ O Supabase (plano gratuito) limita o número de cadastros por hora.
+            Aguarde o tempo indicado ou tente fazer login se já tiver uma conta.
+          </p>
+        </div>
+      )}
+
       <button
         type="submit"
-        disabled={isLoading}
+        disabled={isLoading || isRateLimited}
         className="w-full rounded-md bg-linear-to-r from-rose-500 to-pink-500 px-4 py-2 text-white font-medium hover:from-rose-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {isLoading ? 'Criando conta...' : 'Criar Conta'}
+        {isRateLimited
+          ? `Aguarde ${Math.floor(cooldownRemaining / 60)}:${(cooldownRemaining % 60).toString().padStart(2, '0')}`
+          : isLoading
+            ? 'Criando conta...'
+            : 'Criar Conta'}
       </button>
 
       <p className="text-center text-sm text-gray-600">

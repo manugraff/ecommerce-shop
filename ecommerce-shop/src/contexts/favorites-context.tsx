@@ -4,23 +4,23 @@ import { favoritesService } from '../cases/favorites/services';
 import type { FavoriteDTO } from '../cases/favorites/dtos';
 
 interface FavoritesContextValue {
-  /** Array of current user's favorite items */
+
   favorites: FavoriteDTO[];
-  /** Loading state for favorites operations */
+
   loading: boolean;
-  /** Check if a product is favorited */
+
   isFavorite: (productId: string) => boolean;
-  /** Toggle favorite status of a product */
+
   toggleFavorite: (productId: string) => void;
-  /** Add a product to favorites */
+
   addFavorite: (productId: string) => void;
-  /** Remove a product from favorites */
+
   removeFavorite: (productId: string) => void;
-  /** Get total number of favorites */
+
   favoritesCount: number;
-  /** Clear all favorites */
+
   clearFavorites: () => void;
-  /** Refresh favorites from localStorage */
+
   refreshFavorites: () => void;
 }
 
@@ -31,22 +31,19 @@ interface FavoritesProviderProps {
 }
 
 export function FavoritesProvider({ children }: FavoritesProviderProps) {
-  const { customerData } = useAuth();
+  const { user } = useAuth();
   const [favorites, setFavorites] = useState<FavoriteDTO[]>([]);
   const [loading, setLoading] = useState(false);
 
-  /**
-   * Load favorites from localStorage
-   */
   const loadFavorites = useCallback(() => {
-    if (!customerData?.id) {
+    if (!user?.id) {
       setFavorites([]);
       return;
     }
 
     try {
       setLoading(true);
-      const userFavorites = favoritesService.getFavorites(String(customerData.id));
+      const userFavorites = favoritesService.getFavorites(user.id);
       setFavorites(userFavorites);
     } catch (error) {
       console.error('Error loading favorites:', error);
@@ -54,71 +51,56 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
     } finally {
       setLoading(false);
     }
-  }, [customerData?.id]);
+  }, [user?.id]);
 
-  /**
-   * Load favorites when user changes or component mounts
-   */
   useEffect(() => {
     loadFavorites();
   }, [loadFavorites]);
 
-  /**
-   * Check if a product is favorited
-   */
   const isFavorite = useCallback((productId: string): boolean => {
-    if (!customerData?.id) return false;
+    if (!user?.id) return false;
     return favorites.some(fav => fav.productId === productId);
-  }, [favorites, customerData?.id]);
+  }, [favorites, user?.id]);
 
-  /**
-   * Add a product to favorites
-   */
   const addFavorite = useCallback((productId: string) => {
-    if (!customerData?.id) {
+    if (!user?.id) {
       console.warn('Cannot add favorite: User not authenticated');
       return;
     }
 
     try {
-      const newFavorite = favoritesService.addFavorite(String(customerData.id), productId);
+      const newFavorite = favoritesService.addFavorite(user.id, productId);
       setFavorites(prev => [...prev, newFavorite]);
     } catch (error) {
       console.error('Error adding favorite:', error);
     }
-  }, [customerData?.id]);
+  }, [user?.id]);
 
-  /**
-   * Remove a product from favorites
-   */
   const removeFavorite = useCallback((productId: string) => {
-    if (!customerData?.id) {
+    if (!user?.id) {
       console.warn('Cannot remove favorite: User not authenticated');
       return;
     }
 
     try {
-      const success = favoritesService.removeFavorite(String(customerData.id), productId);
+      const success = favoritesService.removeFavorite(user.id, productId);
       if (success) {
         setFavorites(prev => prev.filter(fav => fav.productId !== productId));
       }
     } catch (error) {
       console.error('Error removing favorite:', error);
     }
-  }, [customerData?.id]);
+  }, [user?.id]);
 
-  /**
-   * Toggle favorite status
-   */
   const toggleFavorite = useCallback((productId: string) => {
-    if (!customerData?.id) {
+    if (!user?.id) {
       console.warn('Cannot toggle favorite: User not authenticated');
       return;
     }
 
     try {
-      const result = favoritesService.toggleFavorite(String(customerData.id), productId);
-      
+      const result = favoritesService.toggleFavorite(user.id, productId);
+
       if (result.isFavorite && result.favorite) {
         setFavorites(prev => [...prev, result.favorite!]);
       } else {
@@ -127,25 +109,19 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
     } catch (error) {
       console.error('Error toggling favorite:', error);
     }
-  }, [customerData?.id]);
+  }, [user?.id]);
 
-  /**
-   * Clear all favorites
-   */
   const clearFavorites = useCallback(() => {
-    if (!customerData?.id) return;
+    if (!user?.id) return;
 
     try {
-      favoritesService.clearFavorites(String(customerData.id));
+      favoritesService.clearFavorites(user.id);
       setFavorites([]);
     } catch (error) {
       console.error('Error clearing favorites:', error);
     }
-  }, [customerData?.id]);
+  }, [user?.id]);
 
-  /**
-   * Refresh favorites from localStorage
-   */
   const refreshFavorites = useCallback(() => {
     loadFavorites();
   }, [loadFavorites]);
@@ -169,9 +145,6 @@ export function FavoritesProvider({ children }: FavoritesProviderProps) {
   );
 }
 
-/**
- * Hook to use favorites context
- */
 export function useFavorites() {
   const context = useContext(FavoritesContext);
 

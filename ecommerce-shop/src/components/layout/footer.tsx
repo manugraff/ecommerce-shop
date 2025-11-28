@@ -6,7 +6,7 @@ export function Footer() {
           © 2025 <span className="bg-linear-to-r from-rose-500 to-pink-600 bg-clip-text text-transparent font-semibold">Glow Up Beauty</span>. All rights reserved.
         </p>
         <p className="text-xs text-gray-500">
-          Made with <span className="text-rose-500">✨</span> by passionate developers
+          Made with <span className="text-rose-500">✨</span> Emanuelli - TCD 2025
         </p>
       </div>
     </footer>

@@ -12,7 +12,7 @@ export function FavoritesPage() {
             Produtos que você marcou como favoritos
           </p>
         </div>
-        
+
         <FavoritesList />
       </div>
     </div>

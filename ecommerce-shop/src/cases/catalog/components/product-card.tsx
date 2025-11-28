@@ -3,7 +3,6 @@ import type { ProductDTO } from '../dtos/product.dto';
 import { ProductImage } from './product-image';
 import { formatBRL } from '../../../lib/format-brl';
 import { useCart } from '../../cart/contexts/cart-context';
-import { useToast } from '../../../contexts/toast-context';
 import { FavoriteButton } from '../../favorites/components/favorite-button';
 
 interface ProductCardProps {
@@ -12,14 +11,13 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
-  const { success } = useToast();
   const navigate = useNavigate();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product);
-    success(`${product.name} adicionado ao carrinho!`);
+
   };
 
   const handleCardClick = () => {
@@ -27,7 +25,7 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div 
+    <div
       onClick={handleCardClick}
       className="group bg-white border border-rose-100 rounded-xl overflow-hidden hover:shadow-xl hover:shadow-rose-100/50 transition-all duration-300 cursor-pointer hover:scale-[1.02] hover:border-rose-200"
     >

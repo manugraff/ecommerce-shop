@@ -10,6 +10,7 @@ import { MainLayout } from './components/layout/main-layout';
 import { HomePage } from './cases/catalog/components/home';
 import { CategoryPage } from './cases/catalog/components/category-page';
 import { ProductDetailsPage } from './cases/catalog/components/product-details';
+import { BrandPage } from './cases/brands/pages/brand-page';
 import { LoginPage } from './pages/login';
 import { RegisterPage } from './pages/register';
 import { OrdersHistoryPage } from './pages/orders-history';
@@ -27,17 +28,18 @@ function App() {
               <CartProvider>
                 <BrowserRouter>
                   <Routes>
-                    {/* Public routes without layout */}
+                    {}
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
 
-                    {/* Routes with main layout */}
+                    {}
                     <Route element={<MainLayout />}>
                       <Route path="/" element={<HomePage />} />
                       <Route path="/category/:categoryId" element={<CategoryPage />} />
+                      <Route path="/brand/:brandId" element={<BrandPage />} />
                       <Route path="/product/:id" element={<ProductDetailsPage />} />
-                      
-                      {/* Protected routes */}
+
+                      {}
                       <Route
                         path="/orders"
                         element={

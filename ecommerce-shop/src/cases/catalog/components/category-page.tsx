@@ -18,8 +18,7 @@ export function CategoryPage() {
   const { data: categories } = useCategories();
 
   const currentCategory = categories?.find((cat) => cat.id === categoryId);
-  
-  // Apply search filter to category products
+
   const { filteredProducts, hasResults } = useProductSearch({
     products: products || [],
     searchQuery,
@@ -46,7 +45,7 @@ export function CategoryPage() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      {/* Breadcrumb */}
+      {}
       <nav className="flex items-center text-sm mb-6 text-gray-600">
         <Link to="/" className="hover:text-rose-600 transition-colors">
           Home
@@ -57,11 +56,11 @@ export function CategoryPage() {
         </span>
       </nav>
 
-      {/* Search Feedback */}
+      {}
       {searchQuery && (
         <div className="mb-6 bg-rose-50 border border-rose-200 rounded-lg p-4">
           <p className="text-rose-800 font-medium">
-            {hasResults 
+            {hasResults
               ? `${filteredProducts.length} produto(s) encontrado(s) para "${searchQuery}" em ${currentCategory?.name || 'esta categoria'}`
               : `Nenhum produto encontrado para "${searchQuery}" em ${currentCategory?.name || 'esta categoria'}`
             }
@@ -69,10 +68,10 @@ export function CategoryPage() {
         </div>
       )}
 
-      {/* Products Grid */}
+      {}
       {!hasResults ? (
         <EmptyState message={
-          searchQuery 
+          searchQuery
             ? `Nenhum produto encontrado para "${searchQuery}" nesta categoria`
             : "Nenhum produto encontrado nesta categoria"
         } />

@@ -23,15 +23,15 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
 
   return (
     <>
-      {/* Backdrop */}
+      {}
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 z-40"
+        className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
         onClick={onClose}
       />
-      
-      {/* Drawer */}
+
+      {}
       <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col">
-        {/* Header */}
+        {}
         <div className="flex items-center justify-between p-4 border-b-2 border-rose-100 bg-linear-to-r from-rose-50 to-pink-50">
           <h2 className="text-xl font-bold bg-linear-to-r from-rose-500 to-pink-600 bg-clip-text text-transparent flex items-center gap-2">
             <span>🛍️</span> Carrinho
@@ -45,7 +45,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           </button>
         </div>
 
-        {/* Content */}
+        {}
         <div className="flex-1 overflow-y-auto p-4">
           {cart.items.length === 0 ? (
             <EmptyCart />
@@ -58,7 +58,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           )}
         </div>
 
-        {/* Footer */}
+        {}
         {cart.items.length > 0 && (
           <div className="p-4 border-t-2 border-rose-100 bg-linear-to-r from-rose-50 to-pink-50 space-y-3">
             <CartSummary subtotal={cart.subtotal} itemCount={cart.itemCount} />

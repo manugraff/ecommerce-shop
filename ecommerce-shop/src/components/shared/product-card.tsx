@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import type { ProductDTO } from '../../cases/catalog/dtos/product.dto';
 import { formatBRL } from '../../lib/format-brl';
 import { useCart } from '../../cases/cart/contexts/cart-context';
-import { useToast } from '../../contexts/toast-context';
 import { FavoriteButton } from '../../cases/favorites/components/favorite-button';
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
@@ -14,14 +13,13 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
-  const { success } = useToast();
   const navigate = useNavigate();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product);
-    success(`${product.name} adicionado ao carrinho!`);
+
   };
 
   const handleCardClick = () => {
@@ -29,18 +27,18 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Card 
+    <Card
       onClick={handleCardClick}
       className="group cursor-pointer hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border-0 bg-white overflow-hidden"
     >
-      {/* Image with aspect ratio 3:4 */}
+      {}
       <div className="relative aspect-3/4 w-full overflow-hidden rounded-t-xl">
-        {/* Placeholder image */}
+        {}
         <div className="h-full w-full object-cover bg-linear-to-br from-rose-50 to-pink-50 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
           <Package className="h-16 w-16 text-rose-300" />
         </div>
-        
-        {/* Overlay FavoriteButton */}
+
+        {}
         <div className="absolute top-3 right-3">
           <FavoriteButton
             productId={product.id}
@@ -49,34 +47,34 @@ export function ProductCard({ product }: ProductCardProps) {
           />
         </div>
       </div>
-      
-      {/* Content */}
+
+      {}
       <div className="p-4">
-        {/* Title */}
+        {}
         <h3 className="font-medium truncate text-gray-900 group-hover:text-rose-600 transition-colors">
           {product.name}
         </h3>
-        
-        {/* Brand */}
+
+        {}
         {product.brand && (
           <p className="text-sm text-muted-foreground mt-1">
             {product.brand.name}
           </p>
         )}
-        
-        {/* Category */}
+
+        {}
         <p className="text-sm text-rose-600 mt-1 font-medium">
           {product.category.name}
         </p>
-        
-        {/* Footer with price and button */}
+
+        {}
         <div className="flex items-center justify-between mt-4">
           <span className="text-lg font-bold text-rose-600">
             {formatBRL(product.price)}
           </span>
         </div>
-        
-        {/* Full width button */}
+
+        {}
         <Button
           onClick={handleAddToCart}
           className="w-full mt-3 bg-rose-600 hover:bg-rose-700 text-white transition-colors"
